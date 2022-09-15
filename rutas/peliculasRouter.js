@@ -2,9 +2,13 @@ import express from 'express';
 import { DataTypes } from "sequelize";
 import sequelize from "../loadSequelize.js";
 //DEFINICION DEL MODELO
-const Alumne = sequelize.define('Alumne', {
-nom: DataTypes.STRING
-}, { tableName: 'alumnes', timestamps: false });
+const Pelicula = sequelize.define('Pelicula', {
+nombre: DataTypes.STRING,
+año_estreno: DataTypes.STRING,
+plataforma:DataTypes.STRING,
+idioma:DataTypes.STRING
+
+}, { tableName: 'peliculas', timestamps: false });
 
 const router = express.Router();
 // GET lista de todos los alumnes
@@ -15,10 +19,10 @@ const router = express.Router();
 // {ok: false, error: mensaje_de_error}
 router.get('/', function (req, res, next) {
 sequelize.sync().then(() => {
-Alumne.findAll()
-.then(alumnes => res.json({
+Pelicula.findAll()
+.then(peliculas => res.json({
 ok: true,
-data: alumnes
+data: peliculas
 }))
 .catch(error => res.json({
 ok: false,
@@ -35,11 +39,11 @@ error: error
 router.get('/:id', function (req, res, next) {
 
 sequelize.sync().then(() => {
-Alumne.findOne({ where: { id: req.params.id } })
+Pelicula.findOne({ where: { id: req.params.id } })
 // .then(Alumne => Alumne.get({plain: true}))
-.then(Alumne => res.json({
+.then(Pelicula => res.json({
 ok: true,
-data: Alumne
+data: Pelicula
 }))
 .catch(error => res.json({
 ok: false,
@@ -56,7 +60,7 @@ error: error
 // POST, creació d'un nou alumne
 router.post('/', function (req, res, next) {
 sequelize.sync().then(() => {
-Alumne.create(req.body)
+Pelicula.create(req.body)
 .then((item) => item.save())
 .then((item) => res.json({ ok: true, data: item }))
 .catch((error) => res.json({ ok: false, error }))
@@ -67,10 +71,10 @@ error: error
 })
 });
 });
-// put modificació d'un alumne
+// put modificació d'un pelicula
 router.put('/:id', function (req, res, next) {
 sequelize.sync().then(() => {
-Alumne.findOne({ where: { id: req.params.id } })
+Pelicula.findOne({ where: { id: req.params.id } })
 .then((al) =>
 al.update(req.body)
 )
@@ -91,10 +95,10 @@ error: error
 });
 });
 
-// DELETE elimina l'alumne id
+// DELETE elimina pelicula id
 router.delete('/:id', function (req, res, next) {
 sequelize.sync().then(() => {
-Alumne.destroy({ where: { id: req.params.id } })
+Pelicula.destroy({ where: { id: req.params.id } })
 .then((data) => res.json({ ok: true, data }))
 .catch((error) => res.json({ ok: false, error }))
 }).catch((error) => {
