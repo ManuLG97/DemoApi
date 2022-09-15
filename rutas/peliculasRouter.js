@@ -6,7 +6,7 @@ const Pelicula = sequelize.define('Pelicula', {
 nombre: DataTypes.STRING,
 año_estreno: DataTypes.STRING,
 plataforma:DataTypes.STRING,
-idioma:DataTypes.STRING
+tipo:DataTypes.STRING
 
 }, { tableName: 'peliculas', timestamps: false });
 
@@ -36,10 +36,10 @@ error: error
 });
 });
 // GET de un solo alumne
-router.get('/:id', function (req, res, next) {
+router.get('/:tipo', function (req, res, next) {
 
 sequelize.sync().then(() => {
-Pelicula.findOne({ where: { id: req.params.id } })
+Pelicula.findAll({ where: { tipo: req.params.tipo } })
 // .then(Alumne => Alumne.get({plain: true}))
 .then(Pelicula => res.json({
 ok: true,
